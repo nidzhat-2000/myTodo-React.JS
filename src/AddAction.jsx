@@ -1,37 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 
 function AddAction() {
   const [newAct, setNewAct] = useState('');
   const [acts, setActs] = useState([]);
-
-  const unique_id = uuid().slice(-8);
+  const randomID = new Date().getTime().toString().slice(-6);
 
   const makeSubmit = e => {
     e.preventDefault();
   };
 
   const addNewAct = () => {
-    // let newact = newAct.text.trim();
+    let newact = newAct.trim();
 
-    if (!newAct) {
+    if (!newact) {
       alert('Please input value !');
       return;
     }
-
-    setActs(prevs => [newAct, ...prevs]);
+    const newItem = { id: randomID, title: newact };
+    setActs([newItem, ...acts]);
     setNewAct('');
+    localStorage.setItem('acts', JSON.stringify(acts));
   };
 
   const deleteAct = id => {
-    const ryn = acts.find(act => act.id !== act.id);
+    const ryn = acts.filter(act => act.id !== id);
     console.log(ryn);
+    setActs(ryn);
   };
 
-  // console.log(acts);
+  const clearAll = () => {
+    setActs([]);
+  };
 
-  useEffect(() => {}, [acts]);
+  useEffect(() => {
+    localStorage.setItem('acts', JSON.stringify(acts));
+  }, [acts]);
+
+  useEffect(() => {
+    const loadData = JSON.parse(localStorage.getItem('acts'));
+    setActs(loadData);
+  }, []);
 
   return (
     <>
@@ -44,9 +52,7 @@ function AddAction() {
             <br />
             <input
               type="text"
-              // id={unique_id}
-              value={newAct.text}
-              // onChange={e => setNewAct({ text: e.target.value, id: unique_id })}
+              value={newAct}
               onChange={e => setNewAct(e.target.value)}
             />
             <button type="button" className="add-action" onClick={addNewAct}>
@@ -56,31 +62,27 @@ function AddAction() {
         </form>
       </div>
 
-      {acts.length === 0 && (
+      {acts.length === 0 ? (
         <div>
-          <ul>
-            <span>Nothing yet</span>
-          </ul>
+          <span>Nothing yet</span>
         </div>
-      )}
-
-      {acts.length !== 0 && (
-        <>
-          <div className="actions">
-            <ol>
-              {acts.map((eachAct, i) => {
-                return (
-                  <li key={i} className="act">
-                    {eachAct}
-                    <button onClick={() => deleteAct(i)} className="delete">
-                      delete
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
-        </>
+      ) : (
+        <div className="actions">
+          <ol>
+            {acts.map((eachAct, i) => {
+              const { id, title } = eachAct;
+              return (
+                <li key={i} className="act">
+                  {eachAct.title}
+                  <button onClick={() => deleteAct(id)} className="delete">
+                    delete
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          <button onClick={clearAll}>Clear all items </button>
+        </div>
       )}
     </>
   );
