@@ -55,7 +55,7 @@ a:hover {
   padding: 5px 10px;
 }
 
-.add-action {
+.btn {
   margin-left: 30px;
   border: none;
   /* width: 100px; */
@@ -64,8 +64,68 @@ a:hover {
   border-radius: 10px;
   background-color: rgb(37, 194, 50);
   color: white;
+  cursor: pointer;
+}
+
+.add:hover {
+  background-color: rgb(17, 151, 28);
+}
+
+.act {
+  font-size: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
 }
 
 .delete {
+  background-color: red;
   margin-left: 20px;
+}
+.delete:hover {
+  background-color: rgb(165, 8, 8);
+}
+
+.clear {
+  background-color: orange;
+  padding: 10px;
+  margin: 20px 0px 20px 200px;
+}
+
+.clear:hover {
+  background-color: rgb(197, 131, 8);
+}
+
+.actions {
+  margin-left: 15px;
+  text-decoration: ;
+}
+
+.up-down {
+  padding: 10px 10px 5px 10px;
+  border-radius: 50%;
+  font-size: 18px;
+  background-color: rgb(71, 105, 216);
+}
+
+ol {
+  list-style: decimal;
+}
+
+.done {
+  text-decoration: line-through;
+}
+
+.animation {
+  margin-top: 30px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background-color: brown;
+  font-size: 15px;
+  display: none;
+}
+
+.show {
+  display: inline-block;
 }
