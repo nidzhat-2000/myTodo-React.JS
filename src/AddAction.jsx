@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { BiTrash } from 'react-icons/bi';
 import { FaArrowDown, FaArrowUp } from 'react-icons/fa';
-import { MdOutlineDone } from 'react-icons/md';
-import { BiEdit } from 'react-icons/bi';
 import ShowMessage from './ShowMessage';
+import ListOfActs from './ListOfActs';
 
 function AddAction() {
   const [newAct, setNewAct] = useState('');
   const [acts, setActs] = useState([]);
   const [up, setUp] = useState(false);
-  const [done, setDone] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editID, setEditID] = useState(null);
   const [message, setMessage] = useState({
     show: false,
     type: '',
     message: '',
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editID, setEditID] = useState(null);
-  const [editName, setEditName] = useState('');
   const randomID = new Date().getTime().toString().slice(-6);
+  const focusHandle = useState(null);
+
+  useEffect(() => {
+    focusHandle.current.focus();
+  });
 
   const toggle = () => {
     setUp(!up);
-  };
-
-  const makeDone = id => {
-    const madeAct = acts.find(act => act.id === id);
-    console.log(madeAct.title);
   };
 
   const makeSubmit = e => {
@@ -40,22 +36,16 @@ function AddAction() {
       } else if (newact && isEditing) {
         setActs(
           acts.map(act => {
-            // console.log(act.actName);
             if (act.id === editID) {
-              if (newact === editName) {
-                return showMessage(true, 'deleted', "nothing changed");
-              }
-
-              return { ...act, actName: newAct };
+              return {
+                ...act,
+                actName: newAct,
+              };
             } else {
               return act;
             }
           })
         );
-
-        if (newact === editName) {
-          console.log('same');
-        }
 
         setEditID(null);
         setIsEditing(false);
@@ -92,29 +82,21 @@ function AddAction() {
     setActs([]);
   };
 
-  const showMessage = (show = false, type = '', message = '') => {
-    setMessage({ show, type, message });
-  };
-
-  // useEffect(() => {
-  //   const removerMessage = setTimeout(() => {
-  //     showMessage();
-  //     // console.log('try');
-  //   }, 2000);
-
-  //   return () => {
-  //     clearTimeout(removerMessage);
-  //   };
-  // }, [acts]);
-
   const editItem = id => {
     const editedItem = acts.find(act => act.id === id);
-    // console.log(editedItem);
     setIsEditing(true);
-    console.log(editedItem.actName);
-    setEditName(editedItem.actName);
     setEditID(id);
     setNewAct(editedItem.actName);
+  };
+
+  const makeDone = e => {
+    e.target
+      .closest('.btn-cont')
+      .parentNode.firstElementChild.classList.toggle('line-through');
+  };
+
+  const showMessage = (show = false, type = '', message = '') => {
+    setMessage({ show, type, message });
   };
 
   return (
@@ -122,17 +104,18 @@ function AddAction() {
       <div className="to-do">
         <form action="" onSubmit={makeSubmit}>
           <div className="create-act">
-            <label htmlFor="" className="pars">
-              Write your task :
+            <label htmlFor="" className="planTitle">
+              What is your plan for today?
             </label>
             <br />
             <input
               type="text"
               value={newAct}
               onChange={e => setNewAct(e.target.value)}
+              ref={focusHandle}
             />
             <button type="submit" className="btn add">
-              Add action
+              {isEditing ? 'Edit ' : 'Add action'}
             </button>
             <button type="button" className="btn up-down" onClick={toggle}>
               {up ? <FaArrowUp /> : <FaArrowDown />}
@@ -154,42 +137,13 @@ function AddAction() {
         </div>
       ) : (
         <div className="actions">
-          <article>
-            {acts.map((eachAct, i) => {
-              const { id, actName } = eachAct;
-              return (
-                <article key={i} className="flex">
-                  <p>{actName}</p>
-                  <div className="btn-cont">
-                    <button onClick={() => makeDone(id)} className="btn done">
-                      <MdOutlineDone />
-                    </button>
-
-                    <button
-                      className="btn edit"
-                      onClick={() => {
-                        // console.log(id);
-                        editItem(id);
-                      }}
-                      type="submit"
-                    >
-                      <BiEdit />
-                    </button>
-
-                    <button
-                      onClick={() => deleteAct(id)}
-                      className="btn delete"
-                    >
-                      <BiTrash />
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
-          </article>
-          <button onClick={clearAll} className="btn clear">
-            Clear All Items
-          </button>
+          <ListOfActs
+            acts={acts}
+            makeDone={makeDone}
+            editItem={editItem}
+            deleteAct={deleteAct}
+            clearAll={clearAll}
+          />
         </div>
       )}
     </>

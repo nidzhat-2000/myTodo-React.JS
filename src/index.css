@@ -46,7 +46,8 @@ a:hover {
 .App {
   max-width: 800px;
   margin: 0 auto;
-  border: 1px solid rgb(247, 27, 27);
+  border: 5px solid rgb(172, 172, 172);
+  border-radius: 10px;
 }
 
 .to-do {
@@ -72,6 +73,10 @@ a:hover {
   background-color: rgb(37, 194, 50);
   color: white;
   cursor: pointer;
+}
+
+.add {
+  padding: 10px 20px;
 }
 
 .add:hover {
@@ -122,6 +127,10 @@ a:hover {
   background-color: rgb(71, 105, 216);
 }
 
+.up-down:hover {
+  background-color: rgb(59, 88, 185);
+}
+
 .done {
   text-decoration: line-through;
 }
@@ -148,4 +157,27 @@ a:hover {
   font-size: 30px;
   text-align: center;
   margin-bottom: 20px;
+}
+
+.line-through {
+  color: rgb(129, 126, 126);
+  padding: 0px 20px;
+  text-decoration: line-through;
+  transition: all 1s;
+}
+
+.about {
+  margin-bottom: 10px;
+}
+
+.info {
+  font-size: 30px;
+  margin: 10px 20px;
+  text-align: center;
+}
+
+.author,
+.github {
+  margin-left: 20px;
+  font-size: 30px;
 }

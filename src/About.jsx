@@ -4,13 +4,19 @@ import { Link } from 'react-router-dom';
 function About() {
   return (
     <div className="about">
-      <h2>
-        This project is made in order to get some confidence in React skills
+      <h2 className="info">
+        This project has been created to gain some confidence in React skills.
       </h2>
-      <span>Author: Nijat Niyazov</span>
-      {/* <Link to="https://mail.google.com/mail/u/0/" target="_blank">
-        U can check my github here
-      </Link> */}
+      <p className="author">
+        Author : <span className="name"> Nijat Niyazov</span>
+      </p>
+      <a
+        href="https://github.com/nidzhat-2000"
+        target="_blank"
+        className="github"
+      >
+        Check my github profile here...
+      </a>
     </div>
   );
 }

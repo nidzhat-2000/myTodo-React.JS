@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 
 function ShowMessage({ removerMessage, type, message, changeAct }) {
-  
   useEffect(() => {
     const neededTimeOut = setTimeout(() => {
       removerMessage();
